@@ -1,0 +1,199 @@
+<!-- HTML5 doküman türü tanımı -->
+<!DOCTYPE html>
+<!-- Sayfa varsayılan dilini Türkçe olarak belirler -->
+<html lang="tr">
+<head>
+  <!-- Karakter kodlamasını UTF-8 (Türkçe karakter desteği) olarak ayarlar -->
+  <meta charset="UTF-8">
+  <!-- Internet Explorer ve Edge uyumluluk modunu en güncel seviyeye çeker -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Mobil ve masaüstü ekranlar için responsive ölçekleme ayarı -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tarayıcı sekme başlığı -->
+  <title>AeroFocus // Mekanik Kokpit Pomodoro</title>
+
+  <!-- PWA manifest yapılandırma dosyasını bağlar -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Mobil cihazların durum çubuğu rengini koyu gece mavisine ayarlar -->
+  <meta name="theme-color" content="#060913">
+  <!-- iOS Safari tarayıcı çubuğunu gizler ve tam ekran açılmasını sağlar -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- iOS durum çubuğu stilini siyah-saydam yapar -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- iOS ana ekranına eklenirken kullanılacak ikon bağlantısı -->
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Google Fonts bağlantılarını hızlandırmak için ön bağlantı kurar -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Tipografi: Okunaklı Plus Jakarta Sans ve JetBrains Mono yazı tiplerini yükler -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Harici stil dosyasını bağlar -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Arka planda donanımı yormadan süzülen dinamik sinematik ışık küreleri -->
+  <div class="ambient-orb ambient-orb-1"></div>
+  <div class="ambient-orb ambient-orb-2"></div>
+  <div class="ambient-orb ambient-orb-3"></div>
+  <!-- Arka plan kozmik derinlik ızgarası -->
+  <div class="ambient-grid"></div>
+
+  <!-- Ana Taşıyıcı ve Buzlu Cam Kokpit Kartı -->
+  <main class="cockpit-card">
+
+    <!-- Üst Başlık ve Hızlı Eylemler Çubuğu -->
+    <header class="header-bar">
+      <div class="brand-group">
+        <!-- Canlı sistem durumu yeşil indikatörü -->
+        <span class="pulse-dot"></span>
+        <span class="brand-name">AeroFocus</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Acil Düşünce Döküm Çekmecesi Butonu (Kısayol: Ctrl+Boşluk) -->
+        <button type="button" id="btn-open-dump" class="btn-icon-label" title="Kısayol: Ctrl + Boşluk">
+          <span>🧠</span>
+          <span>DÜŞÜNCE DÖK</span>
+        </button>
+
+        <!-- Akustik Sesleri Aç/Kapat Butonu -->
+        <button type="button" id="btn-toggle-sound" class="btn-mute" title="Sesi Aç/Kapat">
+          <span id="sound-icon">🔔</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Günün Zinciri (8'li LED Seans Göstergesi) -->
+    <section class="chain-container">
+      <div class="chain-info">
+        <span>GÜNÜN ZİNCİRİ</span>
+        <span id="chain-count-text">0 / 8 SEANS</span>
+      </div>
+      <div class="chain-dots" id="chain-dots-bar">
+        <!-- 8 adet nokta JavaScript tarafından dinamik oluşturulur -->
+      </div>
+    </section>
+
+    <!-- Tek Görev Terminal Kilidi -->
+    <section class="task-terminal">
+      <span class="task-prefix">&gt;</span>
+      <input type="text" id="task-input" class="task-input" placeholder="Bu seansta bitirilecek tek hedef..." maxlength="60" autocomplete="off">
+      <button type="button" id="btn-lock-task" class="btn-lock">KİLİTLE</button>
+    </section>
+
+    <!-- Mod Değiştirme Butonları (Pomodoro / Kısa Mola / Uzun Mola) -->
+    <nav class="mode-tabs">
+      <button type="button" class="mode-tab-btn active" data-time="1500" data-mode="pomodoro">Pomodoro (25dk)</button>
+      <button type="button" class="mode-tab-btn" data-time="300" data-mode="short">Kısa Mola (5dk)</button>
+      <button type="button" class="mode-tab-btn" data-time="900" data-mode="long">Uzun Mola (15dk)</button>
+    </nav>
+
+    <!-- Gelişmiş Kadran ve Sayaç Alanı -->
+    <section class="timer-stage">
+      <div class="gauge-wrapper">
+        <svg class="gauge-svg" viewBox="0 0 280 280">
+          <defs>
+            <!-- Cyan-Mavi Geçiş Degradesi (Ana İlerleme Çemberi İçin) -->
+            <linearGradient id="cyanBlueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#06b6d4" />
+              <stop offset="100%" stop-color="#2563eb" />
+            </linearGradient>
+          </defs>
+
+          <!-- Kadran Çentikleri Grubu (60 adet ince saniye çizgisi) -->
+          <g id="dial-ticks-group"></g>
+
+          <!-- Arkada Dönen Kesikli Mekanik Halka -->
+          <circle class="circle-track-dashed" cx="140" cy="140" r="114" />
+
+          <!-- Hayalet Seans (Ghost) İz Çizgisi -->
+          <circle id="circle-ghost" class="circle-ghost" cx="140" cy="140" r="102" />
+
+          <!-- Ana Sayaç İlerleme Çemberi (Saat Yönünde Tükenen) -->
+          <circle id="circle-progress" class="circle-progress" cx="140" cy="140" r="102" />
+        </svg>
+
+        <!-- Merkeze Konumlanmış Zaman Sayıları ve Telemetri Rozeti -->
+        <div class="timer-center-content">
+          <div class="time-digits" id="timer-display">25:00</div>
+          <div class="ghost-telemetry" id="ghost-telemetry-badge">
+            <span id="ghost-status-icon">▲</span>
+            <span id="ghost-status-text">HAYALET: BEKLEMEDE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontrol Butonları Grid'i (Yeşil Başlat / Mavi Duraklat / Mavi Sıfırla) -->
+    <footer class="controls-grid">
+      <button type="button" id="btn-start" class="btn-action btn-start">BAŞLAT</button>
+      <button type="button" id="btn-pause" class="btn-action btn-pause" disabled>DURAKLAT</button>
+      <button type="button" id="btn-reset" class="btn-action btn-reset">SIFIRLA</button>
+    </footer>
+
+  </main>
+
+  <!-- Acil Düşünce Döküm Modalı (Ctrl + Boşluk) -->
+  <div class="modal-overlay" id="dump-modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🧠 ZİHİN BOŞALTMA TERMİNALİ</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-dump">&times;</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-dim);">Aklına takılan acil düşünceyi yaz ve seansına kesintisiz devam et.</p>
+      
+      <form class="dump-input-form" id="dump-form">
+        <input type="text" id="dump-input" class="dump-input" placeholder="Aklına ne takıldı? (Örn: Faturayı öde)" autocomplete="off">
+        <button type="submit" class="btn-dump-add">EKLE</button>
+      </form>
+
+      <ul class="dump-list" id="dump-items-list">
+        <!-- Düşünceler JavaScript ile buraya eklenir -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Seans Sonu Siyah Kutu Raporu Modalı -->
+  <div class="modal-overlay" id="report-modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🚀 SEANS UÇUŞ RAPORU</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-report">&times;</button>
+      </div>
+
+      <div class="report-stat-grid">
+        <div class="report-stat-card">
+          <span class="stat-caption">ODAK SKORU</span>
+          <span class="stat-number" id="report-score">%96</span>
+        </div>
+        <div class="report-stat-card">
+          <span class="stat-caption">SEKME TERK</span>
+          <span class="stat-number" id="report-tab-switches">0 KEZ</span>
+        </div>
+      </div>
+
+      <div class="report-badge" id="report-ghost-result">
+        HAYALET SEANS: Gece rekorunu 42 sn ile geçtin!
+      </div>
+
+      <button type="button" class="btn-action btn-start" id="btn-confirm-report" style="width: 100%;">
+        RAPORU ONAYLA VE MOLAYA GEÇ
+      </button>
+    </div>
+  </div>
+
+  <!-- Ana JavaScript mantık dosyasını yükler -->
+  <script src="index.js"></script>
+
+  <!-- Service Worker PWA kaydını başlatan script -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
