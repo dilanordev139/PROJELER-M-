@@ -1,0 +1,100 @@
+<!-- Belgenin modern HTML5 standardında olduğunu tanımlar -->
+<!DOCTYPE html>
+<!-- Sayfanın ana dilini Türkçe olarak belirler -->
+<html lang="tr">
+<head>
+    <!-- Karakter kodlamasını UTF-8 (Türkçe karakterleri destekler) olarak tanımlar -->
+    <meta charset="UTF-8">
+    <!-- Internet Explorer ve Edge uyumluluk modunu en güncel seviyeye çeker -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobil cihazlar ve farklı ekran boyutlarında doğru ölçeklenmeyi sağlar -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tarayıcı sekmesinde görüntülenecek başlığı ayarlar -->
+    <title>Vücut Kitle İndeksi (VKİ) Hesaplayıcı</title>
+    <!-- Google Fonts üzerinden Inter yazı tipini sayfaya bağlamak için ön bağlantı kurar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Google Fonts statik kaynak sunucusuna güvenli ön bağlantı kurar -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter yazı tipinin 400 (normal), 500 (orta), 600 ve 700 (kalın) stillerini yükler -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Stil dosyasını bağlar (stil.css) -->
+    <link rel="stylesheet" href="stil.css">
+</head>
+<body>
+    <!-- Uygulamanın merkezi kapsayıcı alanı -->
+    <main class="app-card">
+        <!-- Kartın başlık ve açıklama bölümü -->
+        <header class="card-header">
+            <!-- Ana başlık -->
+            <h1 class="card-title">Vücut Kitle İndeksi (VKİ)</h1>
+            <!-- Kullanıcıyı bilgilendirici alt açıklama metni -->
+            <p class="card-subtitle">Boy ve kilo değerlerinizi girerek ideal kilonuzu öğrenin.</p>
+        </header>
+
+        <!-- Hesaplama formunu başlatan etiket; Enter ile submit desteği sağlar -->
+        <form id="bmi-form" class="bmi-form" novalidate>
+            <!-- Boy giriş alanı grubu -->
+            <div class="input-group">
+                <!-- Boy giriş kutusuna bağlı erişilebilir etiket -->
+                <label for="height" class="input-label">Boyunuz (cm)</label>
+                <!-- Sayısal boy girişi; min 50 cm, max 250 cm sınırlaması içerir -->
+                <input 
+                    type="number" 
+                    id="height" 
+                    class="form-input" 
+                    placeholder="Örn: 175" 
+                    min="50" 
+                    max="250" 
+                    step="0.5" 
+                    required 
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Kilo giriş alanı grubu -->
+            <div class="input-group">
+                <!-- Kilo giriş kutusuna bağlı erişilebilir etiket -->
+                <label for="weight" class="input-label">Kilonuz (kg)</label>
+                <!-- Sayısal kilo girişi; min 20 kg, max 300 kg sınırlaması içerir -->
+                <input 
+                    type="number" 
+                    id="weight" 
+                    class="form-input" 
+                    placeholder="Örn: 70" 
+                    min="20" 
+                    max="300" 
+                    step="0.1" 
+                    required 
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Kullanıcının geçersiz değer girmesi durumunda gösterilecek hata mesajı kutusu -->
+            <div id="error-message" class="error-message" role="alert" aria-live="polite"></div>
+
+            <!-- Formu gönderme ve hesaplamayı tetikleme butonu -->
+            <button type="submit" id="btn" class="btn-calculate">Hesapla</button>
+        </form>
+
+        <!-- Hesaplama sonuçlarının gösterildiği alan (başlangıçta gizlidir) -->
+        <section id="result-box" class="result-box is-hidden" aria-live="polite">
+            <!-- VKİ Değeri başlığı ve büyük sayı göstergesi -->
+            <div class="result-value-wrapper">
+                <span class="result-label">VKİ Değeriniz</span>
+                <!-- Hesaplanan sayısal sonucun yazılacağı eleman -->
+                <span id="bmi-result" class="bmi-number">0.0</span>
+            </div>
+
+            <!-- Durum sınıflandırma rozeti (örn: Zayıf, Normal, Fazla Kilolu) -->
+            <div class="condition-wrapper">
+                <span class="condition-label">Kilo Durumu:</span>
+                <!-- Duruma göre rengi dinamik değişecek olan durum etiketi -->
+                <span id="weight-condition" class="badge">Henüz Hesaplanmadı</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript mantık dosyasını yükler -->
+    <script src="index.js"></script>
+</body>
+</html>

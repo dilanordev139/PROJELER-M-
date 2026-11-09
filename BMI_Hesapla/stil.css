@@ -1,0 +1,342 @@
+/* CSS Değişkenleri (Tema renkleri ve gölgeler tek bir merkezden yönetilir) */
+:root {
+  /* Arka plan gradyan başlangıç rengi */
+  --bg-gradient-start: #38ef7d;
+  /* Arka plan gradyan bitiş rengi */
+  --bg-gradient-end: #11998e;
+  /* Kart arka planının yarı şeffaf beyaz rengi (buzlu cam efekti) */
+  --card-bg: rgba(255, 255, 255, 0.88);
+  /* Kart kenarlık vurgu rengi */
+  --card-border: rgba(255, 255, 255, 0.5);
+  /* Temel koyu metin rengi */
+  --text-primary: #1e293b;
+  /* İkincil soluk metin rengi */
+  --text-secondary: #64748b;
+  /* Buton ana rengi (Zümrüt Yeşili) */
+  --primary-accent: #10b981;
+  /* Buton üzerine gelindiğindeki koyu yeşil tonu */
+  --primary-hover: #059669;
+  /* Hata metin rengi */
+  --danger-color: #ef4444;
+  /* Yumuşak gölge efekti */
+  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.12);
+  /* Keskin iç bileşen gölgesi */
+  --shadow-input: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Tüm HTML elemanları için kutu modeli ve sıfırlama kuralı */
+* {
+  /* Padding ve border genişliği toplam boyuta dahil edilir */
+  box-sizing: border-box;
+  /* Varsayılan dış boşluğu sıfırlar */
+  margin: 0;
+  /* Varsayılan iç boşluğu sıfırlar */
+  padding: 0;
+}
+
+/* Sayfa arka planı ve ekran ortalama ayarları */
+body {
+  /* Modern ve okunaklı Inter yazı tipi ailesini tanımlar */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Canlı yeşil tonlarında çapraz degrade arka plan uygular */
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  /* Ekranın en az %100 yükseklikte olmasını sağlar */
+  min-height: 100vh;
+  /* Flexbox ile içindeki kartı yatayda ve dikeyde ortalar */
+  display: flex;
+  /* Yatay eksende ortalama */
+  justify-content: center;
+  /* Dikey eksende ortalama */
+  align-items: center;
+  /* Küçük ekranlarda kenarlara yapışmayı engelleyen 20px iç boşluk */
+  padding: 20px;
+  /* Yazı rengini koyu lacivert/gri yapar */
+  color: var(--text-primary);
+}
+
+/* Ana Kart Bileşeni (Buzlu cam / Glassmorphism efekti) */
+.app-card {
+  /* Kartın yarı saydam zemin rengini tanımlar */
+  background: var(--card-bg);
+  /* Arka planı hafifçe bulanıklaştırarak gerçek cam hissi oluşturur */
+  backdrop-filter: blur(14px);
+  /* Safari tarayıcıları için arka plan bulanıklık desteği */
+  -webkit-backdrop-filter: blur(14px);
+  /* Kartın etrafına ince beyazımsı bir sınır çizer */
+  border: 1px solid var(--card-border);
+  /* Kart genişliğini %100 yapar */
+  width: 100%;
+  /* Kartın masaüstünde en fazla 420px genişlemesini sağlar */
+  max-width: 420px;
+  /* Kart köşelerine 20px yuvarlaklık katar */
+  border-radius: 20px;
+  /* Kartın iç tarafına 32px boşluk ekler */
+  padding: 32px;
+  /* Kartın altına derinlik katan gölge uygular */
+  box-shadow: var(--shadow-soft);
+}
+
+/* Kartın Başlık Bölümü */
+.card-header {
+  /* Başlık ve alt metni ortalar */
+  text-align: center;
+  /* Formla arasına 24px mesafe koyar */
+  margin-bottom: 24px;
+}
+
+/* Ana Başlık */
+.card-title {
+  /* Başlık metin boyutunu 22px yapar */
+  font-size: 22px;
+  /* Kalın yazı tipi uygular */
+  font-weight: 700;
+  /* Başlık rengini belirler */
+  color: var(--text-primary);
+  /* Alt metinle arasına 8px boşluk bırakır */
+  margin-bottom: 8px;
+}
+
+/* Alt Açıklama Metni */
+.card-subtitle {
+  /* Metin boyutunu 13px yapar */
+  font-size: 13px;
+  /* Soluk gri renk tonu uygular */
+  color: var(--text-secondary);
+}
+
+/* Form Yerleşimi */
+.bmi-form {
+  /* Form alanlarını alt alta hizalamak için flex yapısı kurar */
+  display: flex;
+  /* Dikey yönlendirir */
+  flex-direction: column;
+  /* Form alanları arasına 16px boşluk koyar */
+  gap: 16px;
+}
+
+/* Girdi Alanı Grubu (Label + Input) */
+.input-group {
+  /* İçindekileri dikey sıralar */
+  display: flex;
+  /* Dikey yön */
+  flex-direction: column;
+  /* Etiket ile girdi kutusu arasına 6px boşluk verir */
+  gap: 6px;
+}
+
+/* Girdi Etiketleri */
+.input-label {
+  /* Yazı boyutunu 13px yapar */
+  font-size: 13px;
+  /* Orta seviye yazı kalınlığı uygular */
+  font-weight: 600;
+  /* Etiket rengini ikincil gri tonunda tutar */
+  color: var(--text-secondary);
+}
+
+/* Girdi Kutuları (Boy ve Kilo) */
+.form-input {
+  /* İç boşlukları üst-alttan 12px, sağ-soldan 16px yapar */
+  padding: 12px 16px;
+  /* Yazı boyutunu 15px yapar */
+  font-size: 15px;
+  /* Yazı kalınlığını 500 yapar */
+  font-weight: 500;
+  /* Varsayılan gri çerçeveyi açık griye çeker */
+  border: 1.5px solid #e2e8f0;
+  /* Köşeleri 10px yuvarlar */
+  border-radius: 10px;
+  /* Zemin rengini beyaz yapar */
+  background: #ffffff;
+  /* Yazı rengini koyulaştırır */
+  color: var(--text-primary);
+  /* Kenarlık ve gölge değişimlerini yumuşatır */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Girdi kutusuna tıklandığında (Focus durumu) */
+.form-input:focus {
+  /* Tarayıcının çirkin mavi çerçevesini kaldırır */
+  outline: none;
+  /* Kenarlığı yeşil renge dönüştürür */
+  border-color: var(--primary-accent);
+  /* Yeşilin hafif bir halka gölgesini verir */
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+
+/* Hata Mesajı Alanı */
+.error-message {
+  /* Yazı boyutunu 12px yapar */
+  font-size: 12px;
+  /* Orta kalınlık */
+  font-weight: 600;
+  /* Hata kırmızısı rengi */
+  color: var(--danger-color);
+  /* Metni ortalar */
+  text-align: center;
+  /* Boşken alan kaplamasın diye minimum yükseklik verir */
+  min-height: 16px;
+}
+
+/* Hesapla Butonu */
+.btn-calculate {
+  /* Canlı yeşil zemin rengi */
+  background-color: var(--primary-accent);
+  /* Kenarlık yok */
+  border: none;
+  /* Üst-alttan 14px iç boşluk */
+  padding: 14px;
+  /* Buton köşelerini 10px yuvarlar */
+  border-radius: 10px;
+  /* Beyaz yazı rengi */
+  color: #ffffff;
+  /* 15px yazı boyutu */
+  font-size: 15px;
+  /* Kalın yazı tipi */
+  font-weight: 600;
+  /* Tıklanabilir el işareti gösterir */
+  cursor: pointer;
+  /* Yeşil gölge ekler */
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  /* Hover ve tıklandı efektlerini yumuşatır */
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+/* Butonun üzerine fare geldiğinde */
+.btn-calculate:hover {
+  /* Rengi bir ton koyulaştırır */
+  background-color: var(--primary-hover);
+  /* Gölgeyi güçlendirir */
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+}
+
+/* Butona basıldığı an */
+.btn-calculate:active {
+  /* Butonu hafifçe küçülterek basılma hissi yaratır */
+  transform: scale(0.98);
+}
+
+/* Sonuç Kartı Alanı */
+.result-box {
+  /* Üstten 24px dış boşluk bırakır */
+  margin-top: 24px;
+  /* İçten 20px boşluk verir */
+  padding: 20px;
+  /* Açık mavi/gri zemin verir */
+  background: #f8fafc;
+  /* İnce kenarlık ekler */
+  border: 1px solid #e2e8f0;
+  /* Köşeleri 14px yuvarlar */
+  border-radius: 14px;
+  /* İçerikleri dikey hizalar */
+  display: flex;
+  /* Dikey yön */
+  flex-direction: column;
+  /* Metinleri ortalar */
+  align-items: center;
+  /* Elemanlar arasına 12px boşluk koyar */
+  gap: 12px;
+  /* Açılış geçiş efektini belirler */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Sonuç henüz hesaplanmadığında gizlemek için kullanılan sınıf */
+.result-box.is-hidden {
+  /* Ekranda görünmez yapar */
+  display: none;
+}
+
+/* VKİ Değerini saran alan */
+.result-value-wrapper {
+  /* İçindekileri dikey sıralar */
+  display: flex;
+  /* Dikey yön */
+  flex-direction: column;
+  /* Metinleri ortalar */
+  align-items: center;
+  /* 4px boşluk */
+  gap: 4px;
+}
+
+/* 'VKİ Değeriniz' Etiketi */
+.result-label {
+  /* Yazı boyutu 12px */
+  font-size: 12px;
+  /* İkincil metin rengi */
+  color: var(--text-secondary);
+  /* Büyük harf formatı */
+  text-transform: uppercase;
+  /* Harf aralığı */
+  letter-spacing: 0.5px;
+  /* Kalın yazı */
+  font-weight: 600;
+}
+
+/* Büyük Rakam Göstergesi */
+.bmi-number {
+  /* 44px büyük yazı boyutu */
+  font-size: 44px;
+  /* En kalın seviye */
+  font-weight: 700;
+  /* Rakamların genişliğini sabitler (titremeyi engeller) */
+  font-variant-numeric: tabular-nums;
+  /* Rengi koyu yapar */
+  color: var(--text-primary);
+}
+
+/* Kilo Durumu Rozet Alanı */
+.condition-wrapper {
+  /* Yan yana hizalar */
+  display: flex;
+  /* Dikeyde ortalar */
+  align-items: center;
+  /* 8px boşluk bırakır */
+  gap: 8px;
+  /* 14px yazı boyutu */
+  font-size: 14px;
+}
+
+/* 'Kilo Durumu:' Metni */
+.condition-label {
+  /* İkincil renk tonu */
+  color: var(--text-secondary);
+  /* Orta kalınlık */
+  font-weight: 500;
+}
+
+/* Durum Rozeti (Badge) Taban Stili */
+.badge {
+  /* İç boşluk: üst-alt 6px, sağ-sol 12px */
+  padding: 6px 12px;
+  /* Tam yuvarlak hap tasarımı */
+  border-radius: 999px;
+  /* Yazı boyutu 12px */
+  font-size: 12px;
+  /* Kalın yazı tipi */
+  font-weight: 600;
+  /* Yazı rengini beyaz yapar */
+  color: #ffffff;
+  /* Geçiş efekti */
+  transition: background-color 0.3s ease;
+}
+
+/* Kategori Rozet Renkleri */
+.badge-underweight {
+  /* Zayıf: Açık Mavi */
+  background-color: #0284c7;
+}
+
+.badge-normal {
+  /* Normal: Yeşil */
+  background-color: #10b981;
+}
+
+.badge-overweight {
+  /* Fazla Kilolu: Sarı/Turuncu */
+  background-color: #f59e0b;
+}
+
+.badge-obese {
+  /* Obezite: Kırmızı */
+  background-color: #ef4444;
+}
